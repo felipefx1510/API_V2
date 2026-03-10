@@ -1,0 +1,209 @@
+openapi: "3.0.3"
+info:
+  title: API de Gerenciamento de Tarefas
+  description: API para gerenciar usuários e tarefas
+  version: "1.0.0"
+
+paths:
+  /users:
+    get:
+      tags: [Usuários]
+      summary: Listar todos os usuários
+      responses:
+        "200":
+          description: Lista de usuários
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+    post:
+      tags: [Usuários]
+      summary: Criar um novo usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserInput"
+      responses:
+        "201":
+          description: Usuário criado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Dados inválidos
+
+  /users/{id}:
+    get:
+      tags: [Usuários]
+      summary: Buscar usuário por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Usuário encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: Usuário não encontrado
+
+  /tasks:
+    get:
+      tags: [Tarefas]
+      summary: Listar todas as tarefas
+      responses:
+        "200":
+          description: Lista de tarefas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Task"
+    post:
+      tags: [Tarefas]
+      summary: Criar uma nova tarefa
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskInput"
+      responses:
+        "201":
+          description: Tarefa criada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        "400":
+          description: Dados inválidos
+        "404":
+          description: Usuário não encontrado
+
+  /tasks/{id}:
+    get:
+      tags: [Tarefas]
+      summary: Buscar tarefa por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tarefa encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        "404":
+          description: Tarefa não encontrada
+    put:
+      tags: [Tarefas]
+      summary: Atualizar uma tarefa
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskUpdate"
+      responses:
+        "200":
+          description: Tarefa atualizada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        "404":
+          description: Tarefa não encontrada
+    delete:
+      tags: [Tarefas]
+      summary: Deletar uma tarefa
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Tarefa deletada
+        "404":
+          description: Tarefa não encontrada
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+
+    UserInput:
+      type: object
+      required: [name, email]
+      properties:
+        name:
+          type: string
+          example: "João Silva"
+        email:
+          type: string
+          example: "joao@email.com"
+
+    Task:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        completed:
+          type: boolean
+
+    TaskInput:
+      type: object
+      required: [title, user_id]
+      properties:
+        title:
+          type: string
+          example: "Estudar Python"
+        description:
+          type: string
+          example: "Revisar DTO e Repository"
+        user_id:
+          type: integer
+          example: 1
+
+    TaskUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        completed:
+          type: boolean
