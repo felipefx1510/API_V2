@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory
+from flask import Flask, render_template, send_from_directory
 from flask_swagger_ui import get_swaggerui_blueprint
 from config import Config
 from models import db
@@ -23,6 +23,11 @@ app.register_blueprint(swagger_bp, url_prefix=SWAGGER_URL)
 @app.route("/swagger.yaml")
 def swagger_spec():
     return send_from_directory("docs", "swagger.yaml")
+
+
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 
 # Registrar blueprints
