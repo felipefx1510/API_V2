@@ -12,12 +12,12 @@ app.config.from_object(Config)
 
 db.init_app(app)
 
-# Swagger UI
-SWAGGER_URL = "/docs"
-API_URL = "/swagger.yaml"
+# # Swagger UI
+# SWAGGER_URL = "/docs"
+# API_URL = "/swagger.yaml"
 
-swagger_bp = get_swaggerui_blueprint(SWAGGER_URL, API_URL)
-app.register_blueprint(swagger_bp, url_prefix=SWAGGER_URL)
+# swagger_bp = get_swaggerui_blueprint(SWAGGER_URL, API_URL)
+# app.register_blueprint(swagger_bp, url_prefix=SWAGGER_URL)
 
 
 @app.route("/swagger.yaml")
